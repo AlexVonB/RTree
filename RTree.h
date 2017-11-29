@@ -67,7 +67,7 @@ public:
     MINNODES = TMINNODES,                         ///< Min elements in node
   };
 
-  typedef bool (*t_resultCallback)(DATATYPE, void*);
+  typedef bool (*t_resultCallback)(ELEMTYPE*, ELEMTYPE*, DATATYPE, void*);
 
 public:
 
@@ -1577,12 +1577,14 @@ bool RTREE_QUAL::Search(Node* a_node, Rect* a_rect, int& a_foundCount, t_resultC
       if(Overlap(a_rect, &a_node->m_branch[index].m_rect))
       {
         DATATYPE& id = a_node->m_branch[index].m_data;
+        ELEMTYPE* min = a_node->m_branch[index].m_rect.m_min;
+        ELEMTYPE* max = a_node->m_branch[index].m_rect.m_max;
         ++a_foundCount;
 
         // NOTE: There are different ways to return results.  Here's where to modify
         if(a_resultCallback)
         {
-          if(!a_resultCallback(id, a_context))
+          if(!a_resultCallback(min, max, id, a_context))
           {
             return false; // Don't continue searching
           }

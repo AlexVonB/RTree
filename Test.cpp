@@ -42,9 +42,10 @@ int nrects = sizeof(rects) / sizeof(rects[0]);
 Rect search_rect(6, 4, 10, 6); // search will find above rects that this one overlaps
 
 
-bool MySearchCallback(ValueType id, void* arg)
+bool MySearchCallback(int* min, int* max, ValueType id, void* arg)
 {
   cout << "Hit data rect " << id << "\n";
+  cout << "In Rect [" << min[0] << "," << min[1] << "], [" << max[0] << "," << max[1] << "]\n";
   return true; // keep going
 }
 
